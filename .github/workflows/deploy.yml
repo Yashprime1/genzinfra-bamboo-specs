@@ -5,7 +5,7 @@ name: Build and Deploy Pipeline
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 permissions:
   id-token: write
