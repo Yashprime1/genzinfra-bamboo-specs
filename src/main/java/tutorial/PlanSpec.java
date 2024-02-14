@@ -243,7 +243,7 @@ public class PlanSpec {
                     .description("Clean the working directory")
                     .enabled(true),
                     new ScriptTask()
-                        .description("Trigger NB Deployment")
+                        .description("Remove variables")
                         .interpreterBinSh()
                         .inlineBody("#!/bin/bash\n" +
                                     "set -euxo pipefail\n"+
