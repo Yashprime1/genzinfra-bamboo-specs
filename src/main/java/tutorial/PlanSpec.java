@@ -144,10 +144,6 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"
                                 )
-                 ).artifacts(new Artifact("variables")
-                                            .location("../")
-                                            .copyPatterns("variables.txt")
-                                            .shared(true)
                  ),
                  new Job("Trigger NB Build","BUILDNBJOB").tasks(
                     new ScriptTask()
@@ -171,9 +167,10 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 ).artifactSubscriptions(new ArtifactSubscription()
-                                            .artifact("variables")
-                                            .destination("../variables.txt"))
+                 ).artifacts(new Artifact("variables")
+                                        .location("../")
+                                        .copyPatterns("variables.txt")
+                                        .shared(true))
             ),
             new Stage("Stage 2 : Trigger Component Deployments").jobs(
                  new Job("Trigger Dashboard Deployment","DEPLOYDASHJOB").tasks(
@@ -209,9 +206,7 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )                                
-                 ).artifactSubscriptions(new ArtifactSubscription()
-                 .artifact("variables")
-                 .destination("../variables.txt")),
+                 ),
                  new Job("Trigger NB Deployment","DEPLOYNBJOB").tasks(
                     new ScriptTask()
                         .description("Trigger NB Deployment")
