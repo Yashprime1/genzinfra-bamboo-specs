@@ -17,6 +17,7 @@ import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
 import com.atlassian.bamboo.specs.model.task.InjectVariablesScope;
 import com.atlassian.bamboo.specs.util.BambooServer;
 import com.atlassian.bamboo.specs.api.builders.plan.artifact.Artifact;
+import com.atlassian.bamboo.specs.api.builders.plan.artifact.ArtifactSubscription;
 
 /**
  * Plan configuration for Bamboo.
@@ -170,7 +171,9 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 )
+                 ).artifactSubscriptions(new ArtifactSubscription()
+                                            .artifact("variables")
+                                            .destination("../variables.txt"))
             ),
             new Stage("Stage 2 : Trigger Component Deployments").jobs(
                  new Job("Trigger Dashboard Deployment","DEPLOYDASHJOB").tasks(
@@ -206,7 +209,9 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )                                
-                 ),
+                 ).artifactSubscriptions(new ArtifactSubscription()
+                 .artifact("variables")
+                 .destination("../variables.txt")),
                  new Job("Trigger NB Deployment","DEPLOYNBJOB").tasks(
                     new ScriptTask()
                         .description("Trigger NB Deployment")
@@ -236,7 +241,10 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 ) .finalTasks(
+                 ).artifactSubscriptions(new ArtifactSubscription()
+                                    .artifact("variables")
+                                    .destination("../variables.txt"))
+                 .finalTasks(
                     new CleanWorkingDirectoryTask()
                     .description("Clean the working directory")
                     .enabled(true)
