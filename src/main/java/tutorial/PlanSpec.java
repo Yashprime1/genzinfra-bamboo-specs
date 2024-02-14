@@ -30,7 +30,7 @@ public class PlanSpec {
      */
     public static void main(String[] args) throws Exception {
         // by default credentials are read from the '.credentials' file
-        BambooServer bambooServer = new BambooServer("http://13.235.94.197:8085");
+        BambooServer bambooServer = new BambooServer("http://13.201.61.172:8085");
         Plan plan1 = new PlanSpec().createPlan1("Dashboard","DASH");
         Plan plan2 = new PlanSpec().createPlan2("Notification-Backend","NB");
         Plan plan3 = new PlanSpec().createPlan3("Automated-Tests","AUTOTEST");
