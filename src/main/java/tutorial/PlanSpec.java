@@ -119,6 +119,9 @@ public class PlanSpec {
         plan.stages(
             new Stage("Stage 1 : Trigger Component Builds").jobs(
                  new Job("Trigger Dashboard Build","BUILDDASHJOB").tasks(
+                    new CleanWorkingDirectoryTask()
+                                .description("Clean the working directory")
+                                .enabled(true),
                     new ScriptTask()
                         .description("Trigger DASH Plan")
                         .interpreterBinSh()
@@ -236,10 +239,7 @@ public class PlanSpec {
                                         "echo \"NB Deployment Failed $deployState \"\n"+
                                         "exit 1\n"+
                                     "fi"   
-                                ),
-                                new CleanWorkingDirectoryTask()
-                                .description("Clean the working directory")
-                                .enabled(true)   
+                                )
                  )
             )
         );
