@@ -139,14 +139,7 @@ public class PlanSpec {
                                         "echo \"Dashboard Build Failed\"\n"+
                                         "exit 1\n"+
                                     "fi"
-                                ),   
-                    new ScriptTask()
-                    .description("Trigger DASH Plan")
-                    .interpreterBinSh()
-                    .inlineBody("#!/bin/bash\n" +
-                                "pwd\n"+
-                                "ls"
-                            ),   
+                                ),    
                     new InjectVariablesTask()
                         .path("../variables.txt")
                         .namespace("yash")
@@ -175,7 +168,7 @@ public class PlanSpec {
                                     "fi"   
                                 ),
                     new InjectVariablesTask()
-                        .path("variables.txt")
+                        .path("../variables.txt")
                         .namespace("yash")
                         .scope(InjectVariablesScope.RESULT) 
                  )
