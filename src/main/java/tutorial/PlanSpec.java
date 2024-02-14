@@ -187,7 +187,7 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "cat ../variables.txt\n" +
                                     "echo $bamboo_yash_DashBuildResultKey\n" +
-                                    "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
+                                    "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-$bamboo_shortPlanBranchName-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo Version : $version\n" +
@@ -216,7 +216,7 @@ public class PlanSpec {
                                     "set -euxo pipefail\n"+
                                     "echo $bamboo_clienttoken\n" +
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
-                                    "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
+                                    "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release-$bamboo_shortPlanBranchName-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo $version\n" +
