@@ -195,15 +195,15 @@ public class PlanSpec {
                                     "echo Deployment: $deployresulturl\n"  +
                                     "deployState=$(curl -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
-                                    "while [[ \"$deployState\" == \"Unknown\" ]]\n"+
+                                    "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
                                         "deployState=$(curl  -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" +
                                     "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
-                                        "echo \"Dash Deployed Successfully\"\n"+
+                                        "echo \"Dash Deployed Successfully $deployState\"\n"+
                                         "exit 0\n"+
                                     "else\n"+
-                                        "echo \"Dash Deployment Failed\"\n"+
+                                        "echo \"Dash Deployment Failed $deployState\"\n"+
                                         "exit 1\n"+
                                     "fi"   
                                 )                                
@@ -224,15 +224,15 @@ public class PlanSpec {
                                     "echo $deployresulturl\n" +
                                     "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
-                                    "while [[ \"$deployState\" == \"Unknown\" ]]\n"+
+                                    "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
                                         "deployState=$(curl -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" + 
                                     "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
-                                        "echo \"NB Deployed Successfully\"\n"+
+                                        "echo \"NB Deployed Successfully $deployState\"\n"+
                                         "exit 0\n"+
                                     "else\n"+
-                                        "echo \"NB Deployment Failed\"\n"+
+                                        "echo \"NB Deployment Failed $deployState \"\n"+
                                         "exit 1\n"+
                                     "fi"   
                                 )    
