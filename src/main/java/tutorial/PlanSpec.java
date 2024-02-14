@@ -128,7 +128,8 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "DashBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-DASH' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
                                     "echo $DashBuildResultKey\n" +
-                                    "echo DashBuildResultKey=$DashBuildResultKey >> ../variables.txt\n" +
+                                    "rm -rf variables.txt && touch variables.txt\n" +
+                                    "echo DashBuildResultKey=$DashBuildResultKey >> variables.txt\n" +
                                     "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
                                     "while [[ \"$buildState\" == \"Unknown\" ]]\n"+
@@ -143,10 +144,7 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"
                                 )
-                 ).artifacts(new Artifact("variables")
-                                        .location(".")
-                                        .copyPatterns("variables.txt")
-                                        .shared(true)),
+                 ),
                  new Job("Trigger NB Build","BUILDNBJOB").tasks(
                     new ScriptTask()
                         .description("Trigger NB Plan")
@@ -154,7 +152,6 @@ public class PlanSpec {
                         .inlineBody("#!/bin/bash\n" +
                                     "echo $bamboo_clienttoken\n" +
                                     "NbBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-NB' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
-                                    "rm -rf variables.txt && touch variables.txt\n" +
                                     "echo NbBuildResultKey=$NbBuildResultKey >> variables.txt\n" +
                                     "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
@@ -170,9 +167,10 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 ).artifactSubscriptions(new ArtifactSubscription()
-                 .artifact("variables")
-                 .destination("variables.txt"))
+                 ).artifacts(new Artifact("variables")
+                 .location(".")
+                 .copyPatterns("variables.txt")
+                 .shared(true))
             ),
             new Stage("Stage 2 : Trigger Component Deployments").jobs(
                  new Job("Trigger Dashboard Deployment","DEPLOYDASHJOB").tasks(
