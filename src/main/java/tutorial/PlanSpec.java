@@ -191,7 +191,20 @@ public class PlanSpec {
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo Version : $version\n" +
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
-                                    "echo Deployment: $deployresulturl\n" 
+                                    "echo Deployment: $deployresulturl\n"  +
+                                    "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "echo $deployState\n"+
+                                    "while [[ \"$deployState\" == \"Unknown\" ]]\n"+
+                                    "do\n"+
+                                        "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "done\n" +
+                                    "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
+                                        "echo \"Dash Deployed Successfully\"\n"+
+                                        "exit 0\n"+
+                                    "else\n"+
+                                        "echo \"Dash Deployment Failed\"\n"+
+                                        "exit 1\n"+
+                                    "fi"   
                                 )                                
                  ),
                  new Job("Trigger NB Deployment","DEPLOYNBJOB").tasks(
@@ -206,7 +219,20 @@ public class PlanSpec {
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo $version\n" +
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081346&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.link | .href' )\n" +
-                                    "echo $deployresulturl\n" 
+                                    "echo $deployresulturl\n" +
+                                    "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "echo $deployState\n"+
+                                    "while [[ \"$deployState\" == \"Unknown\" ]]\n"+
+                                    "do\n"+
+                                        "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "done\n" + 
+                                    "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
+                                        "echo \"NB Deployed Successfully\"\n"+
+                                        "exit 0\n"+
+                                    "else\n"+
+                                        "echo \"NB Deployment Failed\"\n"+
+                                        "exit 1\n"+
+                                    "fi"   
                                 )    
                  )
             )
