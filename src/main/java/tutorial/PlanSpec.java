@@ -141,11 +141,7 @@ public class PlanSpec {
                                         "echo \"Dashboard Build Failed\"\n"+
                                         "exit 1\n"+
                                     "fi"
-                                ),    
-                    new InjectVariablesTask()
-                        .path("../variables.txt")
-                        .namespace("yash")
-                        .scope(InjectVariablesScope.RESULT)
+                                )
                  ),
                  new Job("Trigger NB Build","BUILDNBJOB").tasks(
                     new ScriptTask()
@@ -168,11 +164,7 @@ public class PlanSpec {
                                         "echo \"NB Build Failed\"\n"+
                                         "exit 1\n"+
                                     "fi"   
-                                ),
-                    new InjectVariablesTask()
-                        .path("../variables.txt")
-                        .namespace("yash")
-                        .scope(InjectVariablesScope.RESULT) 
+                                )
                  )
             ),
             new Stage("Stage 2 : Trigger Component Deployments").jobs(
@@ -219,6 +211,7 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release--${bamboo.planRepository.1.branch}-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
+                                    "cat ../variables.txt\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo $version\n" +
