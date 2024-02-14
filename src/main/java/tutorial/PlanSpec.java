@@ -16,6 +16,7 @@ import com.atlassian.bamboo.specs.builders.task.ScriptTask;
 import com.atlassian.bamboo.specs.builders.task.VcsCheckoutTask;
 import com.atlassian.bamboo.specs.model.task.InjectVariablesScope;
 import com.atlassian.bamboo.specs.util.BambooServer;
+import com.atlassian.bamboo.specs.api.builders.plan.artifact.Artifact;
 
 /**
  * Plan configuration for Bamboo.
@@ -142,6 +143,10 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"
                                 )
+                 ).artifacts(new Artifact("variables")
+                                            .location("../")
+                                            .copyPatterns("variables.txt")
+                                            .shared(true)
                  ),
                  new Job("Trigger NB Build","BUILDNBJOB").tasks(
                     new ScriptTask()
