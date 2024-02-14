@@ -126,11 +126,11 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "DashBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-DASH' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
                                     "echo DashBuildResultKey=$DashBuildResultKey >> ../variables.txt\n" +
-                                    "buildState=$(curl --request GET --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
+                                    "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
                                     "while [[ \"$buildState\" == \"Unknown\" ]]\n"+
                                     "do\n"+
-                                      "buildState=$(curl --request GET --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\"  --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
+                                      "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\"  --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "done\n" +
                                     "if [[ \"$buildState\" == \"Successful\" ]];then\n"+
                                         "echo \"Dashboard Build Completed Successfully\"\n"+
@@ -153,11 +153,11 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "NbBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-NB' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
                                     "echo NbBuildResultKey=$NbBuildResultKey >> ../variables.txt\n" +
-                                    "buildState=$(curl --request GET --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
+                                    "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
                                     "while [[ \"$buildState\" == \"Unknown\" ]]\n"+
                                     "do\n"+
-                                      "buildState=$(curl --request GET --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\"  --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
+                                      "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\"  --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "done\n" +
                                     "if [[ \"$buildState\" == \"Successful\" ]];then\n"+
                                         "echo \"NB Build Completed Successfully\"\n"+
@@ -189,15 +189,15 @@ public class PlanSpec {
                                     "echo $bamboo_yash_DashBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
-                                    "version=$(curl -vvv -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
+                                    "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo Version : $version\n" +
-                                    "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
+                                    "deployresulturl=$(curl \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
                                     "echo Deployment: $deployresulturl\n"  +
-                                    "deployState=$(curl -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
                                     "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
-                                        "deployState=$(curl  -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                        "deployState=$(curl  -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" +
                                     "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
                                         "echo \"Dash Deployed Successfully $deployState\"\n"+
@@ -218,15 +218,15 @@ public class PlanSpec {
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
-                                    "version=$(curl -vvv -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
+                                    "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo $version\n" +
-                                    "deployresulturl=$(curl -vvv -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081346&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.link | .href' )\n" +
+                                    "deployresulturl=$(curl -vvv \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081346&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.link | .href' )\n" +
                                     "echo $deployresulturl\n" +
-                                    "deployState=$(curl --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                    "deployState=$(curl --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
                                     "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
-                                        "deployState=$(curl -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
+                                        "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" + 
                                     "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
                                         "echo \"NB Deployed Successfully $deployState\"\n"+
