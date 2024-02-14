@@ -199,7 +199,7 @@ public class PlanSpec {
                                     "do\n"+
                                         "deployState=$(curl  -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" +
-                                    "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
+                                    "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
                                         "echo \"Dash Deployed Successfully $deployState\"\n"+
                                         "exit 0\n"+
                                     "else\n"+
@@ -228,7 +228,7 @@ public class PlanSpec {
                                     "do\n"+
                                         "deployState=$(curl -vvv --request GET --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" + 
-                                    "if [[ \"$deployState\" == \"Successful\" ]];then\n"+
+                                    "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
                                         "echo \"NB Deployed Successfully $deployState\"\n"+
                                         "exit 0\n"+
                                     "else\n"+
