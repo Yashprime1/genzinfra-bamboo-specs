@@ -189,6 +189,7 @@ public class PlanSpec {
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
+                                    "echo $version\n" +
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq '.')\n" +
                                     "echo $deployresulturl\n" 
                                 )                                
@@ -203,6 +204,7 @@ public class PlanSpec {
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
+                                    "echo $version\n" +
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081346&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.' )\n" +
                                     "echo $deployresulturl\n" 
                                 )    
