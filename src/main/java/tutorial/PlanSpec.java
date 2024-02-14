@@ -128,7 +128,6 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "DashBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-DASH' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
                                     "echo $DashBuildResultKey\n" +
-                                    "rm -rf ../variables.txt\n" +
                                     "echo DashBuildResultKey=$DashBuildResultKey >> ../variables.txt\n" +
                                     "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
@@ -242,7 +241,14 @@ public class PlanSpec {
                  .finalTasks(
                     new CleanWorkingDirectoryTask()
                     .description("Clean the working directory")
-                    .enabled(true)
+                    .enabled(true),
+                    new ScriptTask()
+                        .description("Trigger NB Deployment")
+                        .interpreterBinSh()
+                        .inlineBody("#!/bin/bash\n" +
+                                    "set -euxo pipefail\n"+
+                                    "rm -rf ../variables.txt\n"    
+                                )
                  )
             )
         );
