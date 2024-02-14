@@ -190,7 +190,7 @@ public class PlanSpec {
                                     "fi"   
                                 ),
                                 new InjectVariablesTask()
-                                .description("Inject variables")
+                                .description("Inject variable")
                                 .namespace("yash")
                                 .path("variables.txt")
                                 .scope(InjectVariablesScope.RESULT)
