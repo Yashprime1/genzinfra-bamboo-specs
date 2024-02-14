@@ -229,7 +229,7 @@ public class PlanSpec {
                                         "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" + 
                                     "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
-                                        "echo \"NB Deployed Successfully $deployState\"\n"+
+                                        "echo \"NB Deployed with Success $deployState\"\n"+
                                         "exit 0\n"+
                                     "else\n"+
                                         "echo \"NB Deployment Failed $deployState \"\n"+
