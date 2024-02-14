@@ -143,7 +143,10 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"
                                 )
-                 ),
+                 ).artifacts(new Artifact("variables")
+                                        .location(".")
+                                        .copyPatterns("variables.txt")
+                                        .shared(true)),
                  new Job("Trigger NB Build","BUILDNBJOB").tasks(
                     new ScriptTask()
                         .description("Trigger NB Plan")
@@ -151,7 +154,8 @@ public class PlanSpec {
                         .inlineBody("#!/bin/bash\n" +
                                     "echo $bamboo_clienttoken\n" +
                                     "NbBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-NB' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
-                                    "echo NbBuildResultKey=$NbBuildResultKey >> ../variables.txt\n" +
+                                    "rm -rf variables.txt && touch variables.txt\n" +
+                                    "echo NbBuildResultKey=$NbBuildResultKey >> variables.txt\n" +
                                     "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$NbBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
                                     "while [[ \"$buildState\" == \"Unknown\" ]]\n"+
@@ -166,15 +170,14 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 ).artifacts(new Artifact("variables")
-                                        .location("../")
-                                        .copyPatterns("variables.txt")
-                                        .shared(true))
+                 ).artifactSubscriptions(new ArtifactSubscription()
+                 .artifact("variables")
+                 .destination("variables.txt"))
             ),
             new Stage("Stage 2 : Trigger Component Deployments").jobs(
                  new Job("Trigger Dashboard Deployment","DEPLOYDASHJOB").tasks(
                     new InjectVariablesTask()
-                        .path("../variables.txt")
+                        .path("variables.txt")
                         .namespace("yash")
                         .scope(InjectVariablesScope.RESULT),
                     new ScriptTask()
@@ -205,7 +208,9 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )                                
-                 ),
+                 ).artifactSubscriptions(new ArtifactSubscription()
+                                            .artifact("variables")
+                                            .destination("variables.txt")),
                  new Job("Trigger NB Deployment","DEPLOYNBJOB").tasks(
                     new ScriptTask()
                         .description("Trigger NB Deployment")
@@ -237,7 +242,7 @@ public class PlanSpec {
                                 )
                  ).artifactSubscriptions(new ArtifactSubscription()
                                     .artifact("variables")
-                                    .destination("../variables.txt"))
+                                    .destination("variables.txt"))
                  .finalTasks(
                     new CleanWorkingDirectoryTask()
                     .description("Clean the working directory")
