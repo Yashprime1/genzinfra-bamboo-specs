@@ -191,7 +191,7 @@ public class PlanSpec {
                                     "cat data.json\n" +
                                     "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo Version : $version\n" +
-                                    "deployresulturl=$(curl \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.')\n" +
+                                    "deployresulturl=$(curl \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
                                     "echo Deployment: $deployresulturl\n"  +
                                     "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
