@@ -184,7 +184,7 @@ public class PlanSpec {
                         .inlineBody("#!/bin/bash\n" +
                                     "set -euxo pipefail\n"+
                                     "echo $bamboo_clienttoken\n" +
-                                    "cat ../variables.txt\n" +
+                                    "cat variables.txt\n" +
                                     "echo $bamboo_yash_DashBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-${bamboo.planRepository.1.branch}-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
@@ -218,7 +218,7 @@ public class PlanSpec {
                                     "echo $bamboo_clienttoken\n" +
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release--${bamboo.planRepository.1.branch}-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
-                                    "cat ../variables.txt\n" +
+                                    "cat variables.txt\n" +
                                     "cat data.json\n" +
                                     "version=$(curl -vvv 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "echo $version\n" +
@@ -250,7 +250,7 @@ public class PlanSpec {
                         .interpreterBinSh()
                         .inlineBody("#!/bin/bash\n" +
                                     "set -euxo pipefail\n"+
-                                    "rm -rf ../variables.txt\n"    
+                                    "rm -rf variables.txt\n"    
                                 )
                  )
             )
