@@ -125,6 +125,7 @@ public class PlanSpec {
                         .inlineBody("#!/bin/bash\n" +
                                     "echo $bamboo_clienttoken\n" +
                                     "DashBuildResultKey=$(curl --request POST --url 'http://13.201.61.172:8085/rest/api/latest/queue/PROJ-DASH' --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' --header 'Content-Type: application/json' --data '{}' | jq -r '.buildResultKey')\n" +
+                                    "echo $DashBuildResultKey\n" +
                                     "echo DashBuildResultKey=$DashBuildResultKey >> ../variables.txt\n" +
                                     "buildState=$(curl --url \"http://13.201.61.172:8085/rest/api/latest/result/$DashBuildResultKey\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.buildState' ) \n" +
                                     "echo $buildState\n"+
