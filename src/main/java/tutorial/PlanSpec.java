@@ -190,14 +190,7 @@ public class PlanSpec {
                                     "cat data.json\n" +
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015809/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081345&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq '.')\n" +
-                                    "echo $deployresulturl\n" +
-                                    "if [[ \"$buildState\" == \"Successful\" ]];then\n"+
-                                        "echo \"Dashboard Build Completed Successfully\"\n"+
-                                        "exit 0\n"+
-                                    "else\n"+
-                                        "echo \"Dashboard Build Failed\"\n"+
-                                        "exit 1\n"+
-                                    "fi"
+                                    "echo $deployresulturl\n" 
                                 )                                
                  ),
                  new Job("Trigger NB Deployment","DEPLOYNBJOB").tasks(
@@ -211,14 +204,7 @@ public class PlanSpec {
                                     "cat data.json\n" +
                                     "version=$(curl -X POST 'http://13.201.61.172:8085/rest/api/latest/deploy/project/1015810/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
                                     "deployresulturl=$(curl -X POST \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081346&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.' )\n" +
-                                    "echo $deployresulturl\n" +
-                                    "if [[ \"$buildState\" == \"Successful\" ]];then\n"+
-                                        "echo \"Dashboard Build Completed Successfully\"\n"+
-                                        "exit 0\n"+
-                                    "else\n"+
-                                        "echo \"Dashboard Build Failed\"\n"+
-                                        "exit 1\n"+
-                                    "fi"
+                                    "echo $deployresulturl\n" 
                                 )    
                  )
             )
