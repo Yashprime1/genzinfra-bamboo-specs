@@ -119,9 +119,6 @@ public class PlanSpec {
         plan.stages(
             new Stage("Stage 1 : Trigger Component Builds").jobs(
                  new Job("Trigger Dashboard Build","BUILDDASHJOB").tasks(
-                    new CleanWorkingDirectoryTask()
-                                .description("Clean the working directory")
-                                .enabled(true),
                     new ScriptTask()
                         .description("Trigger DASH Plan")
                         .interpreterBinSh()
@@ -240,8 +237,11 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 ) .finalTasks()
-                    .cleanWorkingDirectory(true)
+                 ) .finalTasks(
+                    new CleanWorkingDirectoryTask()
+                    .description("Clean the working directory")
+                    .enabled(true)
+                 )
             )
         );
         return plan;
