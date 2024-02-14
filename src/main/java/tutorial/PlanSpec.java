@@ -240,7 +240,8 @@ public class PlanSpec {
                                         "exit 1\n"+
                                     "fi"   
                                 )
-                 )
+                 ) .finalTasks()
+                    .cleanWorkingDirectory(true)
             )
         );
         return plan;
