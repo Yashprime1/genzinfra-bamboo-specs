@@ -208,7 +208,7 @@ public class PlanSpec {
                                     "cat data.json\n" +
                                     "response=$(curl --request POST -vvv 'http://13.201.5.78:8085/rest/api/latest/deploy/project/950273/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\")\n" + 
                                     "echo Repsonse : $response\n" +
-                                    "version = $(echo $response | jq -r '.id')\n" +
+                                    "version=$(echo $response | jq -r '.id')\n" +
                                     "echo Version : $version\n" +
                                     "deployresulturl=$(curl --request POST \"http://13.201.5.78:8085/rest/api/latest/queue/deployment?environmentId=1015809&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
                                     "echo Deployment: $deployresulturl\n"  +
@@ -238,8 +238,10 @@ public class PlanSpec {
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release--${bamboo.planRepository.1.branch}-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
-                                    "version=$(curl --request POST -vvv 'http://13.201.5.78:8085/rest/api/latest/deploy/project/950274/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
-                                    "echo $version\n" +
+                                    "response=$(curl --request POST -vvv 'http://13.201.5.78:8085/rest/api/latest/deploy/project/950274/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\")\n" + 
+                                    "echo Repsonse : $response\n" +
+                                    "version=$(echo $response | jq -r '.id')\n" +
+                                    "echo Version : $version\n" +
                                     "deployresulturl=$(curl --request POST -vvv \"http://13.201.5.78:8085/rest/api/latest/queue/deployment?environmentId=1015810&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.link | .href' )\n" +
                                     "echo $deployresulturl\n" +
                                     "deployState=$(curl --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
