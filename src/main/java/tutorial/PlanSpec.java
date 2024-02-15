@@ -215,6 +215,8 @@ public class PlanSpec {
                                     "echo $deployState\n"+
                                     "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
+                                        "deployresulturl=$(curl \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081351&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
+                                        "echo Deployment: $deployresulturl\n"  +
                                         "deployState=$(curl  -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" +
                                     "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
@@ -244,6 +246,8 @@ public class PlanSpec {
                                     "echo $deployState\n"+
                                     "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
                                     "do\n"+
+                                        "deployresulturl=$(curl -vvv \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081352&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.' )\n" +
+                                        "echo $deployresulturl\n" +    
                                         "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "done\n" + 
                                     "if [[ \"$deployState\" == \"SUCCESS\" ]];then\n"+
@@ -258,14 +262,7 @@ public class PlanSpec {
                  .finalTasks(
                     new CleanWorkingDirectoryTask()
                     .description("Clean the working directory")
-                    .enabled(true),
-                    new ScriptTask()
-                        .description("Remove variables")
-                        .interpreterBinSh()
-                        .inlineBody("#!/bin/bash\n" +
-                                    "set -euxo pipefail\n"+
-                                    "rm -rf variables.txt\n"    
-                                )
+                    .enabled(true)
                  )
             )
         );
