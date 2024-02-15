@@ -202,7 +202,6 @@ public class PlanSpec {
                         .description("Trigger DASH Deployment")
                         .interpreterBinSh()
                         .inlineBody("#!/bin/bash\n" +
-                                    "set -euxo pipefail\n"+
                                     "echo $bamboo_clienttoken\n" +
                                     "echo $bamboo_yash_DashBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-${bamboo.planRepository.1.branch}-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
@@ -233,7 +232,6 @@ public class PlanSpec {
                         .description("Trigger NB Deployment")
                         .interpreterBinSh()
                         .inlineBody("#!/bin/bash\n" +
-                                    "set -euxo pipefail\n"+
                                     "echo $bamboo_clienttoken\n" +
                                     "echo $bamboo_yash_NbBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_NbBuildResultKey}'\", \"name\" : \"'release--${bamboo.planRepository.1.branch}-$bamboo_yash_NbBuildResultKey'\"}' > data.json\n" +
