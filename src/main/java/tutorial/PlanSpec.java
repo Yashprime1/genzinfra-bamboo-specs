@@ -213,7 +213,7 @@ public class PlanSpec {
                                     "echo Deployment: $deployresulturl\n"  +
                                     "deployState=$(curl -vvv --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
-                                    "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
+                                    "while [[ \"$deployState\" == \"UNKNOWN\" || \"$deployState\" == \"null\" ]]\n"+
                                     "do\n"+
                                         "deployresulturl=$(curl \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081351&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
                                         "echo Deployment: $deployresulturl\n"  +
@@ -244,7 +244,7 @@ public class PlanSpec {
                                     "echo $deployresulturl\n" +
                                     "deployState=$(curl --url \"$deployresulturl\" --header \"Authorization: Bearer $bamboo_clienttoken\" --header 'Accept: application/json' | jq -r '.deploymentState' ) \n" +
                                     "echo $deployState\n"+
-                                    "while [[ \"$deployState\" == \"UNKNOWN\" ]]\n"+
+                                    "while [[ \"$deployState\" == \"UNKNOWN\" || \"$deployState\" == \"null\" ]]\n"+
                                     "do\n"+
                                         "deployresulturl=$(curl -vvv \"http://13.201.61.172:8085/rest/api/latest/queue/deployment/?environmentId=1081352&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" |  jq -r '.' )\n" +
                                         "echo $deployresulturl\n" +    
