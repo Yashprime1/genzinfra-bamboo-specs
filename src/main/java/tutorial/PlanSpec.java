@@ -206,7 +206,9 @@ public class PlanSpec {
                                     "echo $bamboo_yash_DashBuildResultKey\n" +
                                     "echo '{\"planResultKey\" : \"'${bamboo_yash_DashBuildResultKey}'\", \"name\" : \"'release-${bamboo.planRepository.1.branch}-$bamboo_yash_DashBuildResultKey'\"}' > data.json\n" +
                                     "cat data.json\n" +
-                                    "version=$(curl --request POST -vvv 'http://13.201.5.78:8085/rest/api/latest/deploy/project/1015815/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\" | jq -r '.id')\n" + 
+                                    "response=$(curl --request POST -vvv 'http://13.201.5.78:8085/rest/api/latest/deploy/project/1015815/version' --header \"Authorization: Bearer $bamboo_clienttoken\"  -H \"Accepts: application/json\" -H \"Content-Type: application/json\" --data-raw \"$(cat data.json)\")\n" + 
+                                    "echo Repsonse : $response\n" +
+                                    "version = $(echo $response | jq -r '.id')\n" +
                                     "echo Version : $version\n" +
                                     "deployresulturl=$(curl --request POST \"http://13.201.5.78:8085/rest/api/latest/queue/deployment/?environmentId=1081351&versionId=$version\" --header \"Authorization: Bearer $bamboo_clienttoken\" -H \"Accepts: application/json\" | jq -r '.link | .href')\n" +
                                     "echo Deployment: $deployresulturl\n"  +
